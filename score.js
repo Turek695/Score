@@ -1,38 +1,46 @@
 const scoreP1 = document.querySelector('.score-p1');
 const scoreP2 = document.querySelector('.score-p2');
-const buttons = document.querySelectorAll('.button');
-const select = document.querySelector('.select');
+const p1Button = document.querySelector('#p1Button');
+const p2Button = document.querySelector('#p2Button');
+const resetButton = document.querySelector('#resetButton');
+const selectLimit = document.querySelector('#playTo');
 
 scoreP1.textContent = 0;
 scoreP2.textContent = 0;
 
-buttons[2].addEventListener('click', function () {
+p1Button.addEventListener('click', () => {
+    scoreCounter(scoreP1, scoreP2, selectLimit)
+})
+
+p2Button.addEventListener('click', () => {
+    scoreCounter(scoreP2, scoreP1, selectLimit)
+})
+
+resetButton.addEventListener('click', resetGame)
+selectLimit.addEventListener('change', resetGame)
+
+function resetGame() {
     scoreP2.textContent = 0; // reset Player 2 score
     scoreP2.classList.remove('score_win', 'score_lose');
     scoreP1.textContent = 0; // reset Player 1 score
     scoreP1.classList.remove('score_win', 'score_lose');
-    buttons[0].disabled = false;
-    buttons[1].disabled = false;
-    buttons[0].classList.remove('button_filter_opacity');
-    buttons[1].classList.remove('button_filter_opacity');
-})
-
-buttons[0].addEventListener('click', () => {
-    scoreCounter(scoreP1, scoreP2, select)
-})
-
-buttons[1].addEventListener('click', () => {
-    scoreCounter(scoreP2, scoreP1, select)
-})
+    p1Button.disabled = false;
+    p2Button.disabled = false;
+    p1Button.classList.remove('button_filter_opacity');
+    p2Button.classList.remove('button_filter_opacity');
+}
 
 function scoreCounter(incrScore, compScore, goal) {
+    // pracowanie na zawartości span zamiast na stworzonej zmiennej - można?
     incrScore.textContent = parseInt(incrScore.textContent) + 1; // increment Player score
-    if (incrScore.textContent == goal.value) {
+    if (incrScore.textContent == goal.value) { // checking if point limit is reached
+        // winning button parameters change:
         incrScore.classList.add('score_win');
-        buttons[1].disabled = true;
-        buttons[1].classList.add('button_filter_opacity');
+        p2Button.disabled = true;
+        p2Button.classList.add('button_filter_opacity');
+        // loosing button parameters change:
         compScore.classList.add('score_lose');
-        buttons[0].disabled = true;
-        buttons[0].classList.add('button_filter_opacity');
+        p1Button.disabled = true;
+        p1Button.classList.add('button_filter_opacity');
     }
 }
